@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { ArrowRight, Play, Package, Zap, Crown } from 'lucide-react'
+import { ArrowRight, Play } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../hooks/useAuth'
@@ -38,18 +38,6 @@ export function Hero() {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div className="text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="mb-6"
-          >
-            <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold mb-4">
-              <Package className="h-4 w-4" />
-              <span>NEW: Complete Brand Kit</span>
-            </div>
-          </motion.div>
-
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -74,7 +62,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <Link
               to={user ? "/dashboard" : "/register"}
@@ -90,50 +78,12 @@ export function Hero() {
             </button>
           </motion.div>
 
-          {/* Feature Highlights */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
-          >
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg mx-auto mb-4">
-                <Package className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Complete Brand Kit</h3>
-              <p className="text-gray-300 text-sm">
-                Logo variations, color palette, typography & brand guidelines
-              </p>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg mx-auto mb-4">
-                <Zap className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">AI-Powered</h3>
-              <p className="text-gray-300 text-sm">
-                Advanced AI algorithms for professional results
-              </p>
-            </div>
-            
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg mx-auto mb-4">
-                <Crown className="h-6 w-6 text-white" />
-              </div>
-              <h3 className="text-lg font-semibold mb-2">Pro Quality</h3>
-              <p className="text-gray-300 text-sm">
-                Professional designs that stand out from the crowd
-              </p>
-            </div>
-          </motion.div>
-
           {/* Stats */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8"
           >
             <div className="text-center">
               <div className="text-3xl font-bold text-purple-400 mb-2">10K+</div>

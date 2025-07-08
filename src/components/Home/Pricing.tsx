@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Check, Star, Crown, Zap, Package } from 'lucide-react'
+import { Check, Star, Crown, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 
@@ -49,7 +49,6 @@ export function Pricing() {
       description: '50 ' + t('generationsPerDay'),
       features: [
         'Everything in Freelancer',
-        'Complete Brand Kit',
         'Video preview generation',
         'All formats (PNG, SVG, MP4)',
         'Advanced AI models',
@@ -58,8 +57,7 @@ export function Pricing() {
       ],
       icon: Crown,
       popular: false,
-      gradient: 'from-blue-500 to-cyan-500',
-      highlight: true
+      gradient: 'from-blue-500 to-cyan-500'
     }
   ]
 
@@ -85,21 +83,12 @@ export function Pricing() {
               viewport={{ once: true }}
               className={`relative bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 ${
                 plan.popular ? 'ring-2 ring-purple-500 scale-105' : ''
-              } ${plan.highlight ? 'ring-2 ring-yellow-500' : ''}`}
+              }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
                   <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
                     Most Popular
-                  </div>
-                </div>
-              )}
-              
-              {plan.highlight && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                  <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold flex items-center space-x-1">
-                    <Package className="h-3 w-3" />
-                    <span>NEW FEATURE</span>
                   </div>
                 </div>
               )}
@@ -139,8 +128,6 @@ export function Pricing() {
                   className={`w-full py-3 px-6 rounded-lg font-semibold text-center transition-all duration-300 block ${
                     plan.popular
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg hover:shadow-purple-500/25'
-                      : plan.highlight
-                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white hover:shadow-lg hover:shadow-yellow-500/25'
                       : 'bg-gray-100 text-gray-900 hover:bg-gray-200'
                   }`}
                 >

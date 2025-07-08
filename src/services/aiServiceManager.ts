@@ -1,32 +1,12 @@
 import { AdvancedAIService } from './advancedAI';
 
 export interface AIGenerationRequest {
-  type: 'logo' | 'merchandise' | 'videoPreview' | 'text' | 'brandKit';
+  type: 'logo' | 'merchandise' | 'videoPreview' | 'text';
   businessName: string;
   description?: string;
   merchandiseType?: 'tshirt' | 'banner' | 'card';
   prompt?: string;
   style?: 'modern' | 'classic' | 'minimal' | 'bold' | 'creative' | 'luxury' | 'tech' | 'nature';
-}
-
-export interface BrandKit {
-  id: string;
-  businessName: string;
-  primaryLogo: string;
-  secondaryLogo: string;
-  iconLogo: string;
-  colorPalette: {
-    primary: string[];
-    secondary: string[];
-    accent: string[];
-    neutral: string[];
-  };
-  typography: {
-    primary: string;
-    secondary: string;
-  };
-  brandGuidelines: string;
-  createdAt: string;
 }
 
 export class AIServiceManager {
@@ -68,19 +48,6 @@ export class AIServiceManager {
     }
   }
 
-  async generateBrandKit(businessName: string, description: string, style?: string): Promise<BrandKit> {
-    console.log(`🎨 Advanced AI generating complete brand kit for: ${businessName}`);
-    
-    try {
-      const brandKit = await this.advancedAI.generateCompleteBrandKit(businessName, description, style);
-      console.log(`✅ Advanced AI brand kit generated successfully:`, brandKit);
-      return brandKit;
-    } catch (error) {
-      console.error(`❌ Advanced AI brand kit generation failed:`, error);
-      throw new Error('Failed to generate brand kit with Advanced AI');
-    }
-  }
-
   async generateText(prompt: string, style: string = 'modern'): Promise<string> {
     try {
       return await this.advancedAI.generateText(prompt, style);
@@ -90,34 +57,14 @@ export class AIServiceManager {
     }
   }
 
-  async generateSlogan(businessName: string, businessType: string, style: string = 'modern'): Promise<string> {
-    try {
-      const prompt = `Create a catchy slogan for ${businessName}, a ${businessType} business. Style: ${style}`;
-      return await this.advancedAI.generateText(prompt, style);
-    } catch (error) {
-      console.error('Failed to generate slogan:', error);
-      throw new Error('Failed to generate slogan');
-    }
+  async generateBusinessDescription(businessName: string, industry: string): Promise<string> {
+    const prompt = `Write a professional business description for ${businessName} in the ${industry} industry`;
+    return this.generateText(prompt, 'modern');
   }
 
-  async generateBusinessDescription(businessName: string, businessType: string, style: string = 'modern'): Promise<string> {
-    try {
-      const prompt = `Write a professional business description for ${businessName}, a ${businessType} business. Style: ${style}`;
-      return await this.advancedAI.generateText(prompt, style);
-    } catch (error) {
-      console.error('Failed to generate business description:', error);
-      throw new Error('Failed to generate business description');
-    }
-  }
-
-  async generateMarketingCopy(businessName: string, businessType: string, style: string = 'modern'): Promise<string> {
-    try {
-      const prompt = `Create compelling marketing copy for ${businessName}, a ${businessType} business. Style: ${style}`;
-      return await this.advancedAI.generateText(prompt, style);
-    } catch (error) {
-      console.error('Failed to generate marketing copy:', error);
-      throw new Error('Failed to generate marketing copy');
-    }
+  async generateMarketingCopy(businessName: string, product: string): Promise<string> {
+    const prompt = `Create compelling marketing copy for ${product} by ${businessName}`;
+    return this.generateText(prompt, 'creative');
   }
 
   async getRemainingCredits(): Promise<{ service: string; credits: number }[]> {

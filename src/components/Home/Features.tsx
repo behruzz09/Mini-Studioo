@@ -1,19 +1,12 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Palette, Video, Shirt, Zap, Download, Globe, Package } from 'lucide-react'
+import { Palette, Video, Shirt, Zap, Download, Globe } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 export function Features() {
   const { t } = useTranslation()
 
   const features = [
-    {
-      icon: Package,
-      title: 'Complete Brand Kit',
-      description: 'Professional logo variations, color palette, typography & brand guidelines',
-      gradient: 'from-yellow-500 to-orange-500',
-      highlight: true
-    },
     {
       icon: Palette,
       title: t('logoDesign'),
@@ -72,16 +65,8 @@ export function Features() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className={`bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 group ${
-                feature.highlight ? 'ring-2 ring-yellow-500 scale-105' : ''
-              }`}
+              className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 group"
             >
-              {feature.highlight && (
-                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white text-xs px-3 py-1 rounded-full font-semibold">
-                  NEW
-                </div>
-              )}
-              
               <div className={`w-16 h-16 rounded-lg bg-gradient-to-r ${feature.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
                 <feature.icon className="h-8 w-8 text-white" />
               </div>
