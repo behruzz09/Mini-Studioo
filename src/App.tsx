@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
+import SEO from './components/SEO';
 import { Toaster } from 'react-hot-toast';
 import { Header } from './components/Layout/Header';
 import { Footer } from './components/Layout/Footer';
@@ -35,41 +37,43 @@ function App() {
   }
 
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/admin-setup" element={<AdminSetup />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/support" element={<Support />} />
-            <Route 
-              path="/dashboard" 
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin" 
-              element={
-                <AdminRoute>
-                  <AdminPanel />
-                </AdminRoute>
-              } 
-            />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster position="top-right" />
-      </div>
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <div className="min-h-screen bg-gray-50">
+          <Header />
+          <main className="flex-1">
+            <Routes>
+              <Route path="/" element={<><SEO /><HomePage /></>} />
+              <Route path="/login" element={<><SEO title="Login" description="Login to your MiniStudio account." /><Login /></>} />
+              <Route path="/register" element={<><SEO title="Register" description="Create a new MiniStudio account." /><Register /></>} />
+              <Route path="/forgot-password" element={<><SEO title="Forgot Password" description="Reset your MiniStudio password." /><ForgotPassword /></>} />
+              <Route path="/reset-password" element={<><SEO title="Reset Password" description="Set a new password for your MiniStudio account." /><ResetPassword /></>} />
+              <Route path="/admin-setup" element={<><SEO title="Admin Setup" description="Setup MiniStudio admin panel." /><AdminSetup /></>} />
+              <Route path="*" element={<><SEO title="404 Not Found" description="Page not found." /><NotFound /></>} />
+              <Route path="/support" element={<><SEO title="Support" description="Get help and support for MiniStudio." /><Support /></>} />
+              <Route 
+                path="/dashboard" 
+                element={
+                  <ProtectedRoute>
+                    <><SEO title="Dashboard" description="Your MiniStudio dashboard." /><Dashboard /></>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/admin" 
+                element={
+                  <AdminRoute>
+                    <><SEO title="Admin Panel" description="MiniStudio admin panel." /><AdminPanel /></>
+                  </AdminRoute>
+                } 
+              />
+            </Routes>
+          </main>
+          <Footer />
+          <Toaster position="top-right" />
+        </div>
+      </Router>
+    </HelmetProvider>
   );
 }
 

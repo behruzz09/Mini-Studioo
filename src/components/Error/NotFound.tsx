@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Home, ArrowLeft, Search, Palette } from 'lucide-react';
+import { Home, Search, Palette } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export function NotFound() {
-  const { t } = useTranslation();
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-purple-900 flex items-center justify-center px-4 relative overflow-hidden">
       {/* Animated background elements */}

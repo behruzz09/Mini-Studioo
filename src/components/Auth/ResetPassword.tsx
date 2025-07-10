@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Lock, CheckCircle, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 export function ResetPassword() {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
@@ -62,7 +60,8 @@ export function ResetPassword() {
       setTimeout(() => {
         navigate('/login');
       }, 3000);
-    } catch (error) {
+    } catch (err) {
+      console.error('Password reset error:', err);
       toast.error('Xatolik yuz berdi');
     } finally {
       setLoading(false);

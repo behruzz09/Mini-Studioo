@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Shield, User, CheckCircle, AlertCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { motion } from 'framer-motion';
@@ -7,7 +6,6 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../../hooks/useAuth';
 
 export function AdminSetup() {
-  const { t } = useTranslation();
   const { user, profile, loading } = useAuth();
   const [email, setEmail] = useState('bbekhruz009@gmail.com');
   const [loadingAction, setLoadingAction] = useState(false);

@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { Mail, ArrowLeft, Send, CheckCircle } from 'lucide-react';
+import { Mail, ArrowLeft, CheckCircle } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import toast from 'react-hot-toast';
 import { motion } from 'framer-motion';
 
 export function ForgotPassword() {
-  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
@@ -28,7 +26,8 @@ export function ForgotPassword() {
 
       setSent(true);
       toast.success('Parolni qayta o\'rnatish havolasi email manzilingizga yuborildi!');
-    } catch (error) {
+    } catch (err) {
+      console.error('Password reset error:', err);
       toast.error('Xatolik yuz berdi');
     } finally {
       setLoading(false);

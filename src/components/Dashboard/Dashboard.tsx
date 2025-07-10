@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Download, Eye, Calendar, Zap, Crown, Star, Brain, Sparkles } from 'lucide-react';
+import { Plus, Eye, Calendar, Zap, Crown, Star } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useDailyLimit } from '../../hooks/useDailyLimit';
 import { CreateDesignModal } from './CreateDesignModal';
@@ -8,7 +8,6 @@ import { DesignGallery } from './DesignGallery';
 import { supabase, GeneratedDesign, mapGeneratedDesign } from '../../lib/supabase';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { aiServiceManager } from '../../services/aiServiceManager';
 
 export function Dashboard() {
   const { t } = useTranslation();
@@ -17,27 +16,35 @@ export function Dashboard() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [designs, setDesigns] = useState<GeneratedDesign[]>([]);
   const [loading, setLoading] = useState(true);
+  const PAGE_SIZE = 9;
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     if (user) {
-      fetchDesigns();
+      fetchDesigns(true);
     }
   }, [user]);
 
-  const fetchDesigns = async () => {
+  const fetchDesigns = async (reset = false) => {
     try {
-      const { data, error } = await supabase
+      const { data, error, count } = await supabase
         .from('designs')
-        .select('*')
+        .select('id,logo_url,merchandise_urls,video_url,business_name,slogan,created_at', { count: 'exact' })
         .eq('user_id', user?.id)
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .range(reset ? 0 : page * PAGE_SIZE, (reset ? 0 : page * PAGE_SIZE) + PAGE_SIZE - 1);
 
       if (error) throw error;
-      
-      // Map database data to interface
       const mappedDesigns = (data || []).map(mapGeneratedDesign);
-      console.log('Fetched designs from database:', mappedDesigns);
-      setDesigns(mappedDesigns);
+      if (reset) {
+        setDesigns(mappedDesigns);
+        setPage(1);
+      } else {
+        setDesigns(prev => [...prev, ...mappedDesigns]);
+        setPage(prev => prev + 1);
+      }
+      setHasMore(mappedDesigns.length === PAGE_SIZE);
     } catch (error) {
       console.warn('Database fetch failed, using localStorage:', error);
       
@@ -110,13 +117,7 @@ export function Dashboard() {
                     {getRoleName(profile?.role || 'user', profile?.isPro || false)}
                   </span>
                 </div>
-                
-                {/* Debug information */}
-                <div className="text-xs text-gray-500 bg-yellow-100 p-2 rounded">
-                  Debug: canGenerate={canGenerate.toString()}, 
-                  remainingUsage={remainingUsage}, 
-                  dailyLimit={dailyLimit}
-                </div>
+                {/* Debug va AI Services yo‘q */}
                 
                 <button
                   onClick={() => {
@@ -142,7 +143,7 @@ export function Dashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"
         >
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center justify-between mb-4">
@@ -165,25 +166,15 @@ export function Dashboard() {
               </p>
             </div>
           </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">Total Designs</h3>
-              <Eye className="h-6 w-6 text-blue-600" />
-            </div>
-            <div className="text-3xl font-bold text-gray-900">{designs.length}</div>
-            <p className="text-sm text-gray-600">Designs created</p>
-          </div>
-
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold text-gray-900">AI Services</h3>
-              <Brain className="h-6 w-6 text-purple-600" />
-            </div>
-            <div className="text-3xl font-bold text-gray-900">3</div>
-            <p className="text-sm text-gray-600">OpenAI • Leonardo • Hugging Face</p>
-          </div>
-        </motion.div>
+  <div className="bg-white rounded-xl shadow-lg p-6">
+    <div className="flex items-center justify-between mb-4">
+      <h3 className="text-lg font-semibold text-gray-900">Total Designs</h3>
+      <Eye className="h-6 w-6 text-blue-600" />
+    </div>
+    <div className="text-3xl font-bold text-gray-900">{designs.length}</div>
+    <p className="text-sm text-gray-600">Designs created</p>
+  </div>
+</motion.div>
 
         {/* Designs Gallery */}
         <motion.div
@@ -193,9 +184,11 @@ export function Dashboard() {
         >
           <DesignGallery 
             designs={designs} 
-            onDesignUpdate={fetchDesigns}
+            onDesignUpdate={() => fetchDesigns(true)}
             setDesigns={setDesigns}
             profile={profile}
+            hasMore={hasMore}
+            onLoadMore={() => fetchDesigns()}
           />
         </motion.div>
       </div>

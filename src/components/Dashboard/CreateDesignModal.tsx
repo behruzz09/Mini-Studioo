@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { X, Palette, Wand2, Sparkles, Brain, Zap, Crown, Leaf, Cpu } from 'lucide-react';
+import { X, Palette, Brain, Cpu } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { supabase, GeneratedDesign } from '../../lib/supabase';
 import { motion } from 'framer-motion';
@@ -167,7 +167,8 @@ export function CreateDesignModal({ onClose, onDesignCreated, canGenerate, remai
         
         // Save to localStorage as fallback
         const offlineDesigns = JSON.parse(localStorage.getItem('offlineDesigns') || '[]');
-        offlineDesigns.push(design);
+        offlineDesigns.unshift(design); // yangi dizayn boshiga qo‘shiladi
+        if (offlineDesigns.length > 5) offlineDesigns.length = 5;
         localStorage.setItem('offlineDesigns', JSON.stringify(offlineDesigns));
         
         console.log('Design saved to localStorage:', design);
@@ -223,7 +224,7 @@ export function CreateDesignModal({ onClose, onDesignCreated, canGenerate, remai
           <div className="flex items-center justify-center space-x-2 mb-4">
             <Brain className="h-8 w-8 text-purple-600" />
             <Cpu className="h-8 w-8 text-blue-600" />
-            <Sparkles className="h-8 w-8 text-pink-600" />
+            <span className="text-2xl">🚀</span>
           </div>
           <p className="text-gray-600 text-center">
             Enter your business details and let our Advanced AI create professional designs for you!

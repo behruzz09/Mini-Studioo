@@ -44,7 +44,8 @@ export function Register() {
 
       toast.success('Account created successfully!');
       navigate('/activate-account');
-    } catch (error) {
+    } catch (err) {
+      console.error('Registration error:', err);
       toast.error('An error occurred during registration');
     } finally {
       setLoading(false);
